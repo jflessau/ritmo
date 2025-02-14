@@ -1,0 +1,19 @@
+[package]
+name = "ritmo"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+chrono = "0.4.39"
+codee = { version = "0.2.0", features = ["json_serde_wasm"] }
+console_log = "1.0.0"
+js-sys = "0.3.77"
+leptos = { version = "0.7.5", features = ["csr"] }
+leptos-use = { version = "0.15.6", features = ["storage"] }
+leptos_meta = "0.7.5"
+leptos_router = "0.7.5"
+log = "0.4.25"
+serde = { version = "1.0.217", features = ["derive"] }
+serde-wasm-bindgen = "0.6.5"
+serde_json = "1"
+uuid = { version = "1", features = ["serde", "v4", "js"] }

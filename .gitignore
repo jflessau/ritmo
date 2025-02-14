@@ -1,0 +1,10 @@
+# project
+/target
+dist
+
+# macOS
+.DS_Store
+.idea
+
+# security
+.env
