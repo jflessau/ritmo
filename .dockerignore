@@ -1,0 +1,11 @@
+.dockerignore
+dockerfile
+
+.zed
+.gitignore
+
+target/
+dist/
+
+LICENSE
+README.md

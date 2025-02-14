@@ -1,6 +1,6 @@
 🏅 ritmo
 
-<img alt="A rounded black square with a white plus-symbol on it." src="public/img/ritmo.png" width="180px"/>
+<img alt="A rounded black square with a white plus-symbol on it." src="public/icon/ritmo.png" width="180px"/>
 
 A habit tracker web app written in [Rust](https://www.rust-lang.org/) with [Leptos](https://leptos.dev/).
 
