@@ -130,7 +130,7 @@ pub fn View() -> impl IntoView {
             <button
                 class="more"
                 on:click=move |_| {
-                    set_weeks_back.update(|n| *n += 12);
+                    set_weeks_back.update(|n| *n += 56);
                 }
             >
                 "More"
