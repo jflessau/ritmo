@@ -14,7 +14,7 @@ pub fn View() -> impl IntoView {
     view! {
         <div class="export-import">
             <textarea
-                placeholder="Paste your json data here.\n\nHave a look at the \"Export Data\" page to see the format."
+                placeholder="Paste your json data here.\nHave a look at the \"Export Data\" page to see the format."
                 prop:value=move || text.get()
                 on:input:target=move |ev| text_set.update(|t| *t = ev.target().value())
             >

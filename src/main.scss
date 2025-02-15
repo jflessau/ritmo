@@ -24,14 +24,16 @@
 }
 
 $dark: #000000;
-$dim: #222;
-$soft: #aaa;
+$dim: #1b1b1b;
+$soft: #808080;
 $light: #ffffff;
 
 $s: 0.7rem;
 $m: 0.9rem;
 $l: 1rem;
 $xl: 1.3rem;
+
+$cell-size: 2.25rem; //
 
 $thin: 200;
 $regular: 400;
@@ -54,27 +56,14 @@ body {
     justify-content: center;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
 p,
 a,
-span,
-pre,
-code,
-ul,
-ol,
-li,
 img,
 div,
 main,
 button,
 input,
-textarea,
-blockquote {
+textarea {
     font-family: "Inter", serif;
     color: $light;
     font-size: $m;
@@ -85,23 +74,19 @@ blockquote {
     padding: 0;
 }
 
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+img {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+p {
     width: 100%;
 }
 
 a {
     font-size: inherit;
     text-decoration: none;
-}
-
-h1 {
-    font-size: $xl;
+    -webkit-tap-highlight-color: transparent;
 }
 
 main {
@@ -112,7 +97,7 @@ main {
     width: 100%;
     max-width: $max-width;
     padding: 0.5rem 0.5rem;
-    gap: 2rem;
+    gap: 1.5rem;
 }
 
 nav {
@@ -129,66 +114,54 @@ nav {
 
 input,
 textarea {
-    outline: none;
-    background: none;
-    border: none;
     padding: 0.5rem 0.75rem;
     width: 100%;
     text-align: center;
     color: $light;
-    &:focus {
-        border-bottom: solid 1px $soft;
-    }
+    border-radius: $rounded;
+    min-height: 3rem;
 }
 textarea {
     text-align: left;
     resize: vertical;
 }
 
-button {
+button,
+a.button {
     cursor: pointer;
-    outline: none;
-    background: $dim;
     font-size: $s;
-    padding: 0.5rem 0.75rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    user-select: none;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+input,
+textarea,
+button,
+a.button {
+    background: $dim;
     border: none;
-    color: $soft;
+    outline: none;
+    color: $light;
     border-radius: $rounded;
+    min-height: 3rem;
+    -webkit-tap-highlight-color: transparent;
     &:focus {
         outline: 1px solid $soft;
-    }
-    &.secondary {
-        background: none;
-        color: $soft;
-        border: solid 1px $dim;
     }
     &:disabled {
         background: $dark !important;
         color: $soft !important;
+        cursor: not-allowed;
     }
-}
-
-.burger {
-    width: 1.75rem;
-    height: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 0.3rem 0rem;
-    div {
-        width: 100%;
-        height: 0.15rem;
-        background: $light;
-    }
-}
-
-.clickable {
-    user-select: none;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
 }
 
 .habit-list {
+    padding-top: 0.5rem;
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 3rem 3rem 3rem 3rem 3rem;
@@ -213,8 +186,9 @@ button {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        background: $dim;
         border-radius: $rounded 0 0 $rounded;
+        border: solid 1px $dim;
+        border-right: none;
         p {
             font-size: $s;
             word-break: break-word;
@@ -227,9 +201,13 @@ button {
         flex-direction: row;
         align-items: center;
         justtify-content: center;
-        background: $dim;
+        background: none;
+        border: solid 1px $dim;
+        border-left: none;
+        border-right: none;
         &.rounded {
             border-radius: 0 $rounded $rounded 0;
+            border-right: solid 1px $dim;
         }
         &.x img {
             opacity: 0.5;
@@ -237,133 +215,88 @@ button {
     }
 }
 
-.home-buttons {
+.buttons {
     width: 100%;
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 0.5rem;
+    a {
+        width: 100%;
+        height: 3rem;
+        button {
+            width: 100%;
+            height: 3rem;
+        }
+    }
+    .more {
+        grid-column: span 3;
+    }
 }
 
+a.hidden,
 .hidden {
     display: none;
 }
 
-$cell-size: 2.25rem;
 .habit {
     width: 100%;
-    margin-bottom: 3.25rem;
     display: flex;
-    flex-direction: column;
-    justify-content: start;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 0.5rem;
-    .input-wrapper {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        aldign-items: center;
+    width: 100%;
+    gap: 0.5rem;
+    .topbar {
+        grid-column: span 3;
+        display: grid;
+        grid-template-columns: 5rem 1fr 5rem;
         gap: 0.5rem;
+        a {
+            width: 100%;
+            height: 3rem;
+        }
         button {
+            width: 100%;
             height: 3rem;
         }
         input {
             width: 100%;
             height: 3rem;
-            border: none;
-            background: $dim;
+            border: solid 1px $dim;
             color: $light;
             border-radius: $rounded;
         }
     }
-    .weeks {
-        margin-top: 1.5rem;
-        width: 100%;
+    .full-width {
+        grid-column: span 3;
+    }
+    .two-thirds {
+        grid-column: span 2;
+    }
+
+    .metric {
+        height: 3.25rem;
         display: flex;
         flex-direction: column;
-        justify-content: start;
+        justify-content: center;
         align-items: center;
         gap: 0.25rem;
-        margin-left: calc($cell-size + 0.15rem);
-        margin-right: calc($cell-size + 0.15rem);
-        padding-right: calc($cell-size + 0.15rem);
-        .weekdays {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            gap: 0.25rem;
-            p {
-                color: $soft;
-                font-size: $s;
-                width: $cell-size;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-        }
-        .week {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: nowrap;
-            justify-content: start;
-            align-items: center;
-            overflow: none;
-            gap: 0.25rem;
-            p,
-            button {
-                width: $cell-size;
-                height: $cell-size;
-                font-size: $s;
-                background: $dim;
-                text-align: center;
-                color: $light;
-                border-radius: $rounded-s;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                &.head {
-                    background: none;
-                    color: $soft;
-                }
-                &.checked {
-                    background: $light;
-                    color: $dark;
-                }
-                &.today {
-                    font-size: $l;
-                    font-weight: 200;
-                }
-            }
-        }
-    }
-    .metrics {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 0.5rem;
         width: 100%;
-        .metric {
-            height: 3.25rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 0.25rem;
-            width: 100%;
-            border-radius: $rounded;
-            background: $dim;
-            padding: 0.5rem 0.75rem;
-            p {
-                color: $light;
-                font-size: $s;
-                text-align: center;
-                &.title {
-                    color: $soft;
-                }
+        border-radius: $rounded;
+        background: none;
+        border: solid 1px $dim;
+        padding: 0.5rem 0.75rem;
+        p {
+            color: $light;
+            font-size: $s;
+            text-align: center;
+            &.title {
+                color: $soft;
             }
         }
     }
     .buttons {
-        margin-top: 1.5rem;
+        grid-column: span 3;
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -373,6 +306,69 @@ $cell-size: 2.25rem;
         button.more {
             width: 100%;
             height: 3.25rem;
+        }
+    }
+}
+
+.weeks {
+    width: 100%;
+    grid-columns: span 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    gap: 0.25rem;
+    margin-left: calc($cell-size + 0.15rem);
+    margin-right: calc($cell-size + 0.15rem);
+    padding-right: calc($cell-size + 0.15rem);
+    .weekdays {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 0.25rem;
+        p {
+            color: $soft;
+            font-size: $s;
+            width: $cell-size;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+    .week {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: start;
+        align-items: center;
+        overflow: none;
+        gap: 0.25rem;
+        p,
+        button {
+            min-height: $cell-size;
+            width: $cell-size;
+            height: $cell-size;
+            font-size: $s;
+            background: $dim;
+            text-align: center;
+            color: $light;
+            border-radius: $rounded-s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            &.head {
+                background: none;
+                color: $soft;
+            }
+            &.checked {
+                background: $light;
+                color: $dark;
+            }
+            &.today {
+                font-size: $l;
+                font-weight: 200;
+            }
         }
     }
 }
@@ -393,9 +389,6 @@ $cell-size: 2.25rem;
         width: 100%;
         height: 80vh;
         padding: 0.5rem;
-        background: $dim;
-        color: $light;
-        border-radius: $rounded;
     }
     .buttons {
         width: 100%;

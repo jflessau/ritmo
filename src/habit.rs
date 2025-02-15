@@ -34,16 +34,17 @@ pub fn View() -> impl IntoView {
 
     view! {
         <div class="habit">
-            {move || {
+            {
                 view! {
-                    <div class="input-wrapper">
-                        <a href="/">
-                            <button>"Back"</button>
+                    <div class="topbar">
+                        <a class="button" href="/" class:hidden=move || delete.get()>
+                            <img src="/lucide-icon/back.svg" alt="Arrow pointing left" />
                         </a>
                         <input
                             type="text"
                             placeholder="Habit Title"
-                            prop:value=title()
+                            prop:value=move || title()
+                            class:hidden=move || delete.get()
                             on:input:target=move |e| {
                                 log::info!("Setting title to {}", e.target().value());
                                 set_state
@@ -52,95 +53,88 @@ pub fn View() -> impl IntoView {
                                     });
                             }
                         />
+
+                        <a
+                            class="button"
+                            class:hidden=move || delete.get()
+                            on:click=move |_| {
+                                set_delete.set(true);
+                            }
+                        >
+                            <img src="/lucide-icon/trash.svg" alt="Trash can" />
+                        </a>
+                        <button
+                            class:hidden=move || !delete.get()
+                            on:click=move |_| {
+                                set_state
+                                    .update(|s| {
+                                        s.remove_habit(id);
+                                    });
+                                navigate("/", NavigateOptions::default());
+                            }
+                        >
+                            "Delete habit!"
+                        </button>
+                        <button
+                            class="two-thirds"
+                            class:hidden=move || !delete.get()
+                            on:click=move |_| {
+                                set_delete.set(false);
+                            }
+                        >
+                            "No, do not delete habit"
+                        </button>
                     </div>
                 }
-            }} <div class="metrics">
-                <div class="metric">
-                    <p class="title">"Past 30 days"</p>
-                    <p class="value">{move || habit().unwrap_or_default().metric_past_30_days()}</p>
-                </div>
-                <div class="metric">
-                    <p class="title">"Total"</p>
-                    <p class="value">{move || habit().unwrap_or_default().metric_total()}</p>
-                </div>
-                <div class="metric">
-                    <p class="title">"Age"</p>
-                    <p class="value">
-                        {move || format!("{} days", habit().unwrap_or_default().metric_age())}
-                    </p>
-                </div>
-                <div class="metric">
-                    <p class="title">"Best Day"</p>
-                    <p class="value">{move || habit().unwrap_or_default().metric_best_weekday()}</p>
-                </div>
-            </div> <div class="weeks" node_ref=element>
-                <div class="weekdays">
-                    <p>""</p>
-                    <p>"Mo"</p>
-                    <p>"Tu"</p>
-                    <p>"We"</p>
-                    <p>"Th"</p>
-                    <p>"Fr"</p>
-                    <p>"Sa"</p>
-                    <p>"Su"</p>
-                </div>
-                {move || {
-                    (0..weeks_back.get())
-                        .map(|n| {
-                            let habit = habit();
-                            match habit {
-                                None => view! { <div /> }.into_any(),
-                                Some(habit) => {
-                                    {
-                                        view! { <WeekView n=n habit=habit set_state=set_state /> }
-                                    }
-                                        .into_any()
-                                }
-                            }
-                        })
-                        .collect::<Vec<_>>()
-                }}
-
-            </div> <div class="buttons">
-                <button
-                    class="more"
-                    on:click=move |_| {
-                        set_weeks_back.update(|n| *n += 12);
-                    }
-                >
-                    "More"
-                </button>
-            </div> <div class="buttons">
-                <button
-                    class="secondary"
-                    class:hidden=move || delete.get()
-                    on:click=move |_| {
-                        set_delete.set(true);
-                    }
-                >
-                    "Delet Habit"
-                </button>
-                <button
-                    class:hidden=move || !delete.get()
-                    on:click=move |_| {
-                        set_delete.set(false);
-                    }
-                >
-                    "No, do not delete habit"
-                </button>
-                <button
-                    class:hidden=move || !delete.get()
-                    on:click=move |_| {
-                        set_state
-                            .update(|s| {
-                                s.remove_habit(id);
-                            });
-                        navigate("/", NavigateOptions::default());
-                    }
-                >
-                    "Yes, delete habit"
-                </button>
+            } <div class="metric">
+                <p class="title">"Total"</p>
+                <p class="value">{move || habit().unwrap_or_default().metric_total()}</p>
+            </div> <div class="metric">
+                <p class="title">"Past 30 days"</p>
+                <p class="value">{move || habit().unwrap_or_default().metric_past_30_days()}</p>
+            </div> <div class="metric">
+                <p class="title">"Best Day"</p>
+                <p class="value">{move || habit().unwrap_or_default().metric_best_weekday()}</p>
             </div>
+        </div>
+        <div class="weeks" node_ref=element>
+            <div class="weekdays">
+                <p>""</p>
+                <p>"Mo"</p>
+                <p>"Tu"</p>
+                <p>"We"</p>
+                <p>"Th"</p>
+                <p>"Fr"</p>
+                <p>"Sa"</p>
+                <p>"Su"</p>
+            </div>
+            {move || {
+                (0..weeks_back.get())
+                    .map(|n| {
+                        let habit = habit();
+                        match habit {
+                            None => view! { <div /> }.into_any(),
+                            Some(habit) => {
+                                {
+                                    view! { <WeekView n=n habit=habit set_state=set_state /> }
+                                }
+                                    .into_any()
+                            }
+                        }
+                    })
+                    .collect::<Vec<_>>()
+            }}
+
+        </div>
+        <div class="buttons">
+            <button
+                class="more"
+                on:click=move |_| {
+                    set_weeks_back.update(|n| *n += 12);
+                }
+            >
+                "More"
+            </button>
         </div>
     }
 }

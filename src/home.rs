@@ -42,7 +42,7 @@ pub fn View() -> impl IntoView {
             }}
 
         </div>
-        <div class="home-buttons">
+        <div class="buttons">
             <a href="/habit">
                 <button>"Add habit"</button>
             </a>
@@ -52,7 +52,6 @@ pub fn View() -> impl IntoView {
             <a href="/import">
                 <button>"Import Data"</button>
             </a>
-
         </div>
     }
 }
@@ -70,7 +69,7 @@ fn Habit(habit: Habit, days: Vec<DateTime<Local>>, set_state: WriteSignal<State>
             .map(|(n, d)| {
                 let rounded = n == days_len - 1;
                 let checked = habit.state_for_day(&Day::from_local_date(&d));
-                let src = if checked { "/lucide-icons/check.svg" } else { "/lucide-icons/x.svg" };
+                let src = if checked { "/lucide-icon/check.svg" } else { "/lucide-icon/x.svg" };
                 view! {
                     <div class:rounded=rounded class:x=!checked class="check clickable">
                         <img
