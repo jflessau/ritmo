@@ -10,8 +10,9 @@ Habit tracker web app written in [Rust](https://www.rust-lang.org/) with [Leptos
 - 👤 No Login
 - 🔌 Works offline
 - 📁 Data ex- and import
+- 🌐 PWA ready
 
-👉 [Demo](https://ritmo.janflessau.de)
+👉 [Demo](https://ritmo.jflessau.com)
 
 ## Development
 

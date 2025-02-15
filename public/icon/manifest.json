@@ -93,13 +93,13 @@
       "src": "/icon/screenshot-desktop-1.png",
       "type": "image/png",
       "sizes": "720x540",
-      "form_factor": "narrow"
+      "form_factor": "wide"
     },
     {
       "src": "/icon/screenshot-desktop-1.png",
       "type": "image/png",
       "sizes": "720x540",
-      "form_factor": "narrow"
+      "form_factor": "wide"
     }
   ]
 }
