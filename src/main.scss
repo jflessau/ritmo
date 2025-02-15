@@ -163,8 +163,8 @@ button {
         border: solid 1px $dim;
     }
     &:disabled {
-        background: $dark;
-        color: $soft;
+        background: $dark !important;
+        color: $soft !important;
     }
 }
 

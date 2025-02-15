@@ -1,8 +1,8 @@
-🏅 ritmo
+# 🏅 ritmo
 
 <img alt="A rounded black square with a white plus-symbol on it." src="public/icon/ritmo.png" width="180px"/>
 
-A habit tracker web app written in [Rust](https://www.rust-lang.org/) with [Leptos](https://leptos.dev/).
+Habit tracker web app written in [Rust](https://www.rust-lang.org/) with [Leptos](https://leptos.dev/).
 
 ## Features
 
@@ -10,6 +10,8 @@ A habit tracker web app written in [Rust](https://www.rust-lang.org/) with [Lept
 - 👤 No Login
 - 🔌 Works offline
 - 📁 Data ex- and import
+
+👉 [Demo](https://ritmo.janflessau.de)
 
 ## Development
 
@@ -28,4 +30,11 @@ Building the app will ouput all necessary files to the `dist` directory. Choose 
 
 ```sh
 trunk build --release
+```
+
+Or use the provided Dockerfile to build a docker image:
+
+```sh
+docker build -t ritmo .
+docker run -p 8080:80 ritmo
 ```
