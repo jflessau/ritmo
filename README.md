@@ -33,7 +33,7 @@ Building the app will ouput all necessary files to the `dist` directory. Choose 
 trunk build --release
 ```
 
-Or use the provided Dockerfile to build a docker image:
+Or use the provided `dockerfile` to build a docker image with nginx as the server.
 
 ```sh
 docker build -t ritmo .
