@@ -46,7 +46,6 @@ $max-width: 600px;
 
 html,
 body {
-    widht: 100%;
     background: $dark;
     padding: 0;
     margin: 0;
@@ -182,10 +181,9 @@ a.button {
         }
     }
     .caption {
-        padding-left: 1rem;
         display: flex;
-        flex-direction: column;
-        justify-content: center;
+        flex-direction: row;
+        justify-content: flex-start;
         border-radius: $rounded 0 0 $rounded;
         border: solid 1px $dim;
         border-right: none;
@@ -194,13 +192,31 @@ a.button {
             word-break: break-word;
             padding: 0.5rem 0;
         }
+        a {
+            padding-left: 1rem;
+            align-content: center;
+        }
+
+        .position-controls {
+            margin-left: 1rem;
+            display: flex;
+            flex-direction: row;
+
+            button {
+                min-height: 1rem;
+            }
+
+            .left {
+                margin-right: 0.5rem;
+            }
+        }
     }
     .check {
         padding: 0.8rem;
         display: flex;
         flex-direction: row;
         align-items: center;
-        justtify-content: center;
+        justify-content: center;
         background: none;
         border: solid 1px $dim;
         border-left: none;
@@ -218,7 +234,7 @@ a.button {
 .buttons {
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 0.5rem;
     a {
         width: 100%;
@@ -312,7 +328,6 @@ a.hidden,
 
 .weeks {
     width: 100%;
-    grid-columns: span 3;
     display: flex;
     flex-direction: column;
     justify-content: start;

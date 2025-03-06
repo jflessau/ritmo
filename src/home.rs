@@ -8,6 +8,7 @@ pub struct MyState {
 #[component]
 pub fn View() -> impl IntoView {
     let (state, set_state, _) = use_local_storage::<State, JsonSerdeWasmCodec>("state");
+    let (show_controls, set_show_controls) = signal(false);
     let today = Local::now();
     let days = (0..5)
         .map(|i| today - chrono::Duration::days(i))
@@ -35,34 +36,93 @@ pub fn View() -> impl IntoView {
                     .iter()
                     .map(|habit| {
                         view! {
-                            <Habit habit=habit.clone() days=days.clone() set_state=set_state />
+                            <Habit habit=habit.clone() days=days.clone() set_state=set_state show_controls=show_controls />
                         }
                     })
                     .collect::<Vec<_>>()
             }}
-
         </div>
         <div class="buttons">
             <a href="/habit">
-                <button>"Add habit"</button>
+                <button>"Add"</button>
             </a>
+            <button on:click=move |_| set_show_controls.update(|v| *v = !*v)>"Sort"</button>
             <a href="/export">
-                <button>"Export Data"</button>
+                <button>"Export"</button>
             </a>
             <a href="/import">
-                <button>"Import Data"</button>
+                <button>"Import"</button>
             </a>
         </div>
     }
 }
 
+fn is_movable(habit_id: Uuid, move_down: bool) -> bool {
+    let (state, _, _) = use_local_storage::<State, JsonSerdeWasmCodec>("state");
+    let habits = state.get().habits;
+
+    habits
+        .iter()
+        .position(|h| h.id == habit_id)
+        .is_some_and(|index| {
+            if move_down {
+                index < habits.len() - 1
+            } else {
+                index > 0
+            }
+        })
+}
+
+fn update_habit_index(habit_id: Uuid, move_down: bool) {
+    let (state, set_state, _) = use_local_storage::<State, JsonSerdeWasmCodec>("state");
+
+    let mut habits = state.get().habits;
+
+    if let Some(pos) = habits.iter().position(|h| h.id == habit_id) {
+        let new_index = if move_down {
+            pos.saturating_add(1)
+        } else {
+            pos.saturating_sub(1)
+        };
+
+        if new_index < habits.len() {
+            habits.swap(pos, new_index);
+            set_state.update(|state| state.habits = habits);
+        }
+    }
+}
+
 #[component]
-fn Habit(habit: Habit, days: Vec<DateTime<Local>>, set_state: WriteSignal<State>) -> impl IntoView {
+fn Habit(
+    habit: Habit,
+    days: Vec<DateTime<Local>>,
+    set_state: WriteSignal<State>,
+    show_controls: ReadSignal<bool>,
+) -> impl IntoView {
     let days_len = days.len();
     view! {
-        <a class="caption " href=format!("/habit/{}", habit.id)>
-            <p>{habit.title.clone()}</p>
-        </a>
+        <div class="caption">
+            {move || show_controls.get().then(|| view! {
+                <div class="position-controls">
+                    <button
+                        class="left"
+                        on:click=move |_| { update_habit_index(habit.id, false); }
+                        disabled=move || !is_movable(habit.id, false)
+                    >
+                        "↑"
+                    </button>
+                    <button
+                        on:click=move |_| { update_habit_index(habit.id, true); }
+                        disabled=move || !is_movable(habit.id, true)
+                    >
+                        "↓"
+                    </button>
+                </div>
+            })}
+            <a href=format!("/habit/{}", habit.id)>
+                <p>{habit.title.clone()}</p>
+            </a>
+        </div>
         {days
             .into_iter()
             .enumerate()
