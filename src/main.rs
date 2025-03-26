@@ -66,7 +66,7 @@ impl std::default::Default for State {
 
 impl State {
     pub fn add_habit(&mut self, habit: Habit) {
-        self.habits.push(habit.clone());
+        self.habits.push(habit);
     }
 
     pub fn remove_habit(&mut self, id: Uuid) {
@@ -76,7 +76,7 @@ impl State {
     pub fn toggle_day(&mut self, habit_id: Uuid, day: Day) {
         log::info!("in fn toggle_day: habit_id: {:?}, day: {:?}", habit_id, day);
         if let Some(habit) = self.habits.iter_mut().find(|habit| habit.id == habit_id) {
-            if habit.days.iter().find(|d| d == &&day).is_some() {
+            if habit.days.iter().any(|d| &d == &&day) {
                 habit.days.retain(|d| d != &day);
             } else {
                 habit.days.push(day);
@@ -141,18 +141,8 @@ impl Habit {
         self.days.len() as u32
     }
 
-    pub fn metric_age(&self) -> u32 {
-        let today = Day::today();
-        let first_day = self.days.iter().min().unwrap_or(&today);
-        let days = today
-            .local_date()
-            .signed_duration_since(first_day.local_date())
-            .num_days();
-        days as u32
-    }
-
     pub fn metric_best_weekday(&self) -> String {
-        let mut days = vec![0; 7];
+        let mut days = [0; 7];
         for day in &self.days.iter().collect::<Vec<_>>() {
             days[day.local_date().weekday().num_days_from_monday() as usize] += 1;
         }
@@ -161,8 +151,8 @@ impl Habit {
             .enumerate()
             .filter(|(_, &count)| count > 0)
             .max_by_key(|(_, &count)| count)
-            .map(|(i, _)| i)
-            .unwrap_or(7);
+            .map_or(7, |(i, _)| i);
+
         match best_day {
             0 => "Monday".to_string(),
             1 => "Tuesday".to_string(),
