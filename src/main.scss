@@ -166,6 +166,10 @@ a.button {
     grid-template-columns: 1fr 3rem 3rem 3rem 3rem 3rem;
     grid-row-gap: 0.5rem;
 
+    &.show-controls {
+        grid-template-columns: 1fr 3rem 3rem 3rem;
+    }
+
     .date {
         display: flex;
         flex-direction: column;
@@ -201,9 +205,10 @@ a.button {
             margin-left: 1rem;
             display: flex;
             flex-direction: row;
+            align-items: center;
 
             button {
-                min-height: 1rem;
+                min-height: 2.5rem;
             }
 
             .left {

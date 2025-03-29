@@ -10,15 +10,19 @@ pub fn View() -> impl IntoView {
     let (state, set_state, _) = use_local_storage::<State, JsonSerdeWasmCodec>("state");
     let (show_controls, set_show_controls) = signal(false);
     let today = Local::now();
-    let days = (0..5)
-        .map(|i| today - chrono::Duration::days(i))
-        .rev()
-        .collect::<Vec<_>>();
+
+    let days = move || {
+        let num_of_days = if show_controls.get() { 3 } else { 5 };
+        (0..num_of_days)
+            .map(|i| today - chrono::Duration::days(i))
+            .rev()
+            .collect::<Vec<_>>()
+    };
 
     view! {
-        <div class="habit-list">
+        <div class={move || format!("habit-list {}", show_controls.get().then(|| "show-controls").unwrap_or_default())}>
             <div />
-            {days
+            {move || days()
                 .iter()
                 .map(|d| {
                     view! {
@@ -36,7 +40,7 @@ pub fn View() -> impl IntoView {
                     .iter()
                     .map(|habit| {
                         view! {
-                            <Habit habit=habit.clone() days=days.clone() set_state=set_state show_controls=show_controls />
+                            <Habit habit=habit.clone() days=days().clone() set_state=set_state show_controls=show_controls />
                         }
                     })
                     .collect::<Vec<_>>()
